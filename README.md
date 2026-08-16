@@ -1,8 +1,12 @@
 # UTEQ Smart Parking
 
 Aplicación web para simular y monitorear un estacionamiento inteligente de 80 espacios en la Universidad Técnica Estatal de Quevedo (UTEQ).
-<img width="1919" height="1010" alt="image" src="https://github.com/user-attachments/assets/2a53e315-49f5-44a4-8168-e43f7e34a004" />
-<img width="384" height="712" alt="image" src="https://github.com/user-attachments/assets/27eff0ef-ecb2-4db1-81c6-0643e224f6e2" />
+<img width="1907" height="900" alt="image" src="https://github.com/user-attachments/assets/d2cf24f8-387f-4840-8463-f6830b02c9fd" />
+<img width="1309" height="684" alt="image" src="https://github.com/user-attachments/assets/561f14b2-3573-406b-b22a-84ff88243795" />
+<img width="1285" height="790" alt="image" src="https://github.com/user-attachments/assets/92aa0892-21cf-432d-bb72-041505a57aa0" />
+<img width="428" height="770" alt="image" src="https://github.com/user-attachments/assets/75bcde17-923f-4e1b-86d1-013cea469e9d" />
+<img width="462" height="720" alt="image" src="https://github.com/user-attachments/assets/08887315-5477-4bcb-9e9a-d11a415a4ed1" />
+
 
 
 ## Tecnologías
