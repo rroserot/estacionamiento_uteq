@@ -300,3 +300,138 @@ a { color: inherit; text-decoration: none; }
   .panel { padding: 18px; }
   .panel-heading { flex-direction: column; }
 }
+/* ===============================
+   BOUNDING BOX
+================================ */
+
+.bounding-box-data {
+  display: grid;
+  gap: 4px;
+}
+
+.bounding-box-data span {
+  display: block;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* ===============================
+   SENSOR SIN INFORMACIÓN
+================================ */
+
+.unknown-dot {
+  background: #8a928d;
+}
+
+
+/* ===============================
+   MAPA
+================================ */
+
+.map-wrap {
+  margin-top: 18px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid #dce6dd;
+}
+
+.map {
+  width: 100%;
+  height: 500px;
+}
+/* =================================
+   BOTÓN DETALLE
+================================= */
+
+.detail-button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 13px 18px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #087a45;
+  color: white;
+
+  font-weight: 800;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.detail-button:hover {
+  background: #066a3b;
+  transform: translateY(-1px);
+}
+
+
+/* =================================
+   TABLA DEL HISTORIAL
+================================= */
+
+.history-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 18px;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.history-table thead {
+  background: #eef3ef;
+}
+
+.history-table th {
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 11px;
+  color: #536258;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.history-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e2e8e3;
+}
+
+.history-table tbody tr:hover {
+  background: #f7faf7;
+}
+
+.history-status {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.history-status.libre {
+  background: #dcf2e4;
+  color: #087a45;
+}
+
+.history-status.ocupado {
+  background: #fce3df;
+  color: #c44034;
+}
+
+.detail-subtitle {
+  margin-top: 28px;
+}
+
+.detail-back {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-start;
+}

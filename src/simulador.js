@@ -1,46 +1,165 @@
-import { onValue, push, ref, set, update } from 'firebase/database'
+import {
+  get,
+  push,
+  ref,
+  set,
+  update
+} from 'firebase/database'
+
 import { db } from './services/firebase'
 
-let intervalo = null
+let intervaloSimulacion = null
 
-export function iniciarSimulacion(periodoMs = 5000) {
-  if (intervalo) return
+function generarDistanciaAleatoria() {
+  const probabilidadOcupado = Math.random()
 
-  intervalo = setInterval(() => {
-    onValue(
-      ref(db, 'espacios'),
-      async (snapshot) => {
-        const data = snapshot.val() || {}
-        const ids = Object.keys(data)
-        if (!ids.length) return
-
-        const cambios = Math.max(1, Math.floor(Math.random() * 5))
-
-        for (let i = 0; i < cambios; i++) {
-          const id = ids[Math.floor(Math.random() * ids.length)]
-          const distanciaDetectada = Number((10 + Math.random() * 190).toFixed(1))
-          const estado = distanciaDetectada <= 50 ? 'ocupado' : 'libre'
-          const fechaHora = Date.now() + i
-
-          await update(ref(db, `espacios/${id}`), {
-            distanciaDetectada,
-            estado,
-            fechaHora
-          })
-
-          await set(push(ref(db, `historial/${id}`)), {
-            distanciaDetectada,
-            estado,
-            fechaHora
-          })
-        }
-      },
-      { onlyOnce: true }
+  // Aproximadamente 50% ocupados y 50% libres
+  if (probabilidadOcupado < 0.5) {
+    // Ocupado: <= 50 cm
+    return Number(
+      (10 + Math.random() * 40).toFixed(1)
     )
-  }, periodoMs)
+  }
+
+  // Libre: > 50 cm
+  return Number(
+    (55 + Math.random() * 145).toFixed(1)
+  )
+}
+
+async function actualizarSensor(id) {
+  const distanciaDetectada =
+    generarDistanciaAleatoria()
+
+  const estado =
+    distanciaDetectada <= 50
+      ? 'ocupado'
+      : 'libre'
+
+  const fechaHora = Date.now()
+
+  // Actualizar estado actual del sensor
+  await update(
+    ref(db, `espacios/${id}`),
+    {
+      distanciaDetectada,
+      estado,
+      fechaHora
+    }
+  )
+
+  // Guardar registro histórico
+  const nuevoRegistro = push(
+    ref(db, `historial/${id}`)
+  )
+
+  await set(
+    nuevoRegistro,
+    {
+      distanciaDetectada,
+      estado,
+      fechaHora
+    }
+  )
+}
+
+async function ejecutarCicloSimulacion() {
+  try {
+    const snapshot = await get(
+      ref(db, 'espacios')
+    )
+
+    if (!snapshot.exists()) {
+      console.log(
+        'No existen espacios en Firebase.'
+      )
+      return
+    }
+
+    const datos = snapshot.val()
+
+    const ids = Object.keys(datos)
+
+    if (ids.length === 0) {
+      return
+    }
+
+    /*
+      Elegir aleatoriamente entre
+      2 y 5 sensores en cada ciclo
+    */
+    const cantidadCambios =
+      Math.floor(
+        Math.random() * 4
+      ) + 2
+
+    const sensoresSeleccionados =
+      [...ids]
+        .sort(
+          () => Math.random() - 0.5
+        )
+        .slice(
+          0,
+          cantidadCambios
+        )
+
+    for (
+      const id
+      of sensoresSeleccionados
+    ) {
+      await actualizarSensor(id)
+    }
+
+    console.log(
+      `Simulación: ${cantidadCambios} sensores actualizados`
+    )
+  } catch (error) {
+    console.error(
+      'Error durante la simulación:',
+      error
+    )
+  }
+}
+
+export function iniciarSimulacion(
+  periodoMs = 5000
+) {
+  if (intervaloSimulacion) {
+    return
+  }
+
+  console.log(
+    'Simulación automática iniciada.'
+  )
+
+  /*
+    Ejecuta un primer ciclo inmediatamente
+  */
+  ejecutarCicloSimulacion()
+
+  /*
+    Después actualiza sensores
+    cada cierto tiempo
+  */
+  intervaloSimulacion =
+    setInterval(
+      ejecutarCicloSimulacion,
+      periodoMs
+    )
 }
 
 export function detenerSimulacion() {
-  clearInterval(intervalo)
-  intervalo = null
+  if (!intervaloSimulacion) {
+    return
+  }
+
+  clearInterval(
+    intervaloSimulacion
+  )
+
+  intervaloSimulacion = null
+
+  console.log(
+    'Simulación automática detenida.'
+  )
 }
